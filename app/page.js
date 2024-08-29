@@ -38,10 +38,8 @@ export default function Home() {
     useEffect(()=>{
       updateInventory()
 
-      }, []//since it is empty, the function runs once when the page is loaded
-
-    )
-  }
+      }, []);//since it is empty, the function runs once when the page is loaded
+}
 
   //ADD ITEMS
   const addItem = async (item) =>
