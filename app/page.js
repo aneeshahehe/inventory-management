@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react"; //client-sided functions
 import { deleteDoc, firestore, setDoc } from "firebase/firestore";
-import {Box,Typography} from "@mui/material";
+import {Box,Typography,Modal, Stack, TextField, Button} from "@mui/material";
 
 import {query, collection, getDocs} from 'firebase/firestore';
 // import '../globals.css';
@@ -15,7 +15,7 @@ export default function Home() {
   //1. state variable to store inventory
   const [inventory, setInventory] = useState([]);
   //2. state variable to add or remove stuff
-  const [open, setOpen] = useState([])
+  const [open, setOpen] = useState(true)
   //3. to store name of the items 
   const [itemName, setItemName] = useState('') //default value
   //updating firebase to take a snapshot of firebase, make it async = it won't block our code while it's fetching
@@ -101,10 +101,81 @@ export default function Home() {
     height="100vh"
     width="100vw"
     display= "flex"
+    flexDirection="column"
     justifyContent="center"
     alignItems="center"
     gap={2}>
-      <Typography variant='h1'>Inventory Management</Typography>
+      {/* creating modals with material UI 
+      when isOpen(a state variable) is 'true', modal is visible*/}
+      <Modal open={open} onClose={close}>
+        <Box position="absolute" 
+          top="50%"
+          left="50%"
+          
+          width={400}
+          bgcolor="white"
+          border="2px solid #0000"
+          boxShadow={24}
+          p={4}
+          display="flex"
+
+          flexDirection="column"
+          gap={3}
+          sx={{
+            transform: "translate(-50%, -50%)"
+              }}
+        >
+          <Typography variant="h6">
+            Add Item
+          </Typography>
+          <Stack width="100%" direction="row" spacing={2}>
+            <TextField
+            variant='outlined' fullWidth
+            value={itemName}
+            onChange={(e)=>
+              setItemName(e.target.value)
+            }/>
+            {/* add item to the database */}
+            <Button variant="outlined"
+              onClick={()=>
+              {
+                addItem(itemName)  //Stores the current value of the input field for the item name.
+                setItemName('')    // Clears the input field.
+                handleClose() //to close the modal after item is added(isOpen='false')
+              }
+
+              }
+            >
+              Add
+            </Button>
+          </Stack>
+        </Box>
+        
+      </Modal>
+
+      <Button variant="contained"
+            onClick={()=>
+            {
+              
+              handleOpen() //to open the modal dialogbox(setting isOpen to 'true') when items need to be added
+            }
+
+            }
+            >
+              Add New Item
+            </Button>
+            <Box border="1px solid #333">
+              <Box width="800px" height="100px" bgcolor="#ADD8E6" display="flex" alignItems="center" justifyContent="center">
+                <Typography variant='h2'color="#333">
+                      Inventory Items
+                </Typography>
+              </Box>
+            </Box>
+            
+
+
+      
+      
       {
         inventory.forEach((item) =>{
           return(
