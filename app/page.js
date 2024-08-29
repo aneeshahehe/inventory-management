@@ -1,10 +1,10 @@
 'use client' //to make this a client-sided app
-import Image from "next/image";
+
 import { useState, useEffect } from "react"; //client-sided functions
-import { deleteDoc, firestore, setDoc } from "firebase/firestore";
+import {doc, deleteDoc, setDoc, query, collection, getDocs } from "firebase/firestore";
 import {Box,Typography,Modal, Stack, TextField, Button} from "@mui/material";
 
-import {query, collection, getDocs} from 'firebase/firestore';
+import firestore from '/firebase';
 // import '../globals.css';
 // import '../styles/Component.module.css';
 
@@ -171,6 +171,20 @@ export default function Home() {
                 </Typography>
               </Box>
             </Box>
+            <Stack width="800px" height="300px" spacing={2} overflow="auto">
+              {
+              /* show inventory items 
+                this deferences the objects without needing item.name or item.quantity*/}
+                {inventory.map(({name ,quantity}) => (
+                  <Box key={name} width="100%" minHeight="150px" display="flex" alignItems="center" justifyContent="center" bgcolor="#f0f0f0" padding={5}>
+                    <Typography>
+                      {name}
+                    </Typography>
+                  </Box>
+                ))}
+              
+            </Stack>
+
             
 
 
